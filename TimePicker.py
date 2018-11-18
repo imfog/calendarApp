@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import tkinter as tk
 import tkinter.ttk as ttk
+import re
 
 #Global Constants
 UP_ARROW_CODE = 'f700'
@@ -20,6 +21,7 @@ class TimePicker:
 		self.curr_min_minutes    = self.MIN_MINUTES
 		#expected format is {"hr":IntVar(), "min":IntVar()}
 		self.update_target_feild = None #set the current time to the target variable
+		self.regex_match_zeros = re.compile('^0.+')
 
 		#initialize frame
 		time_frame = tk.Frame(master=tk_parent, bg="azure", colormap="new")
@@ -58,7 +60,7 @@ class TimePicker:
 		hrEntry.grid(row=2, column=0)
 
 		#Minutes Text Entry
-		minEntry = tk.Entry(master=time_frame, textvariable=self.curr_minutes, validate="key", justify=tk.CENTER, width=3, bg = "white", state="readonly")
+		minEntry = tk.Entry(master=time_frame, textvariable=self.curr_minutes, validate="key", justify=tk.CENTER, width=3, bg = "white")
 		minEntry['validatecommand'] = (minEntry.register(self.validateMinutesEntry), '%S', '%P','%d')
 
 		#Bind this entry
@@ -148,7 +150,9 @@ class TimePicker:
 		if acttyp != '0':
 			if not inStr.isdigit():
 				return False
-
+			match = re.search(self.regex_match_zeros,inStr)
+			if match:
+				return False
 			k = int(inStr)
 			if k < self.curr_min_hour or k > self.MAX_HOURS:
 				return False
@@ -161,7 +165,9 @@ class TimePicker:
 		if acttyp != '0':
 			if not inStr.isdigit():
 				return False
-
+			match = re.search(self.regex_match_zeros,inStr)
+			if match:
+				return False
 			k = int(inStr)
 			if k < self.curr_min_minutes or k > self.MAX_MINUTES:
 				return False
