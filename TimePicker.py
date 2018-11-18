@@ -29,7 +29,7 @@ class TimePicker:
 
 		#intilaze label
 		label = tk.Label(master=time_frame, text="Time Picker, 24hr (HH:MM)", bg="white", fg="black", relief=tk.RAISED)
-		label.grid(row=0, column = 0, columnspan=2)
+		label.grid(row=0, column = 0, columnspan=3)
 
 		#style and create the buttons
 		style = ttk.Style()
@@ -42,16 +42,19 @@ class TimePicker:
 		hrArrowUp.grid(row=1, column = 0, ipady=10, ipadx=10)
 
 		minArrowUp = ttk.Button(time_frame, style='U.TButton', command=self.onMinArrowUp)
-		minArrowUp.grid(row=1, column = 1, ipady=10, ipadx=10)
+		minArrowUp.grid(row=1, column = 2, ipady=10, ipadx=10)
 
 		hrArrowDown = ttk.Button(time_frame, style='D.TButton', command=self.onHourArrowDown)
 		hrArrowDown.grid(row=3, column = 0, ipady=10, ipadx=10)
 
 		minArrowDown = ttk.Button(time_frame, style='D.TButton', command=self.onMinArrowDown)
-		minArrowDown.grid(row=3, column = 1, ipady=10, ipadx=10)
+		minArrowDown.grid(row=3, column = 2, ipady=10, ipadx=10)
+
+		colon_label = tk.Label(master=time_frame, text=":", bg="white",relief=tk.RAISED)
+		colon_label.grid(row=2, column=1)
 
 		#Text Entry:
-		hrEntry = tk.Entry(master=time_frame, textvariable=self.curr_hour, validate="key", justify=tk.CENTER, width=3, bg = "white")
+		hrEntry = tk.Entry(master=time_frame, textvariable=self.curr_hour, validate="key", justify=tk.CENTER, relief=tk.RAISED, width=3, bg = "white")
 		hrEntry['validatecommand'] = (hrEntry.register(self.validateHourEntry), '%S', '%P','%d')
 		
 		#Bind this Entry
@@ -60,13 +63,13 @@ class TimePicker:
 		hrEntry.grid(row=2, column=0)
 
 		#Minutes Text Entry
-		minEntry = tk.Entry(master=time_frame, textvariable=self.curr_minutes, validate="key", justify=tk.CENTER, width=3, bg = "white")
+		minEntry = tk.Entry(master=time_frame, textvariable=self.curr_minutes, validate="key", justify=tk.CENTER,relief=tk.RAISED, width=3, bg = "white")
 		minEntry['validatecommand'] = (minEntry.register(self.validateMinutesEntry), '%S', '%P','%d')
 
 		#Bind this entry
 		minEntry.bind('<Up>', self.onMinArrowUp)
 		minEntry.bind('<Down>', self.onMinArrowDown)
-		minEntry.grid(row=2, column=1)
+		minEntry.grid(row=2, column=2)
 
 	#clears the current time values
 	def _clear(self):
