@@ -1,10 +1,12 @@
-#!/usr/bin/python3
+#!/usr/local/bin/python3
 import tkinter as tk
 import tkinter.ttk as ttk
 import tkinter.font as tkFont
 import calendar
 import datetime as dt
 
+# Displays Months of the year as
+# selection grid
 class Month:
 	#static Contstants
 	ROWS    = 3
@@ -14,7 +16,7 @@ class Month:
 	SLCT_BG = '#003eff'
 	SLCT_FG = 'white'
 
-	def __init__(self, tk_parent, stringVar_):
+	def __init__(self, tk_parent, stringVar_, default_month = dt.date.today().month):
 		self.notifyStrVar = stringVar_
 		self.slected_label = None
 		self.displayMonths = []
@@ -30,9 +32,14 @@ class Month:
 			for j in range(self.COLUMNS):
 				label_ = tk.Label(master=tk_parent, text = self.displayMonths[i*self.COLUMNS + j],bg = "white", relief=tk.RAISED)
 				label_.grid(row=i+1, column=j, sticky="news")
+				label_.bind("<1>", self.clicked)
+
+				if i*self.COLUMNS + j + 1 == default_month:
+					label_.configure(background=self.SLCT_BG, foreground=self.SLCT_FG)
+					self.slected_label = label_
+
 				label_.bind("<Enter>", lambda event: event.widget.configure(background=self.ACT_BG, foreground=self.ACT_FG))
 				label_.bind("<Leave>", lambda event: event.widget.configure(background="white"))
-				label_.bind("<1>", self.clicked)
 
 		font = tkFont.Font()
 		maxwidth = max(font.measure(text) for text in self.displayMonths)
@@ -64,6 +71,10 @@ class Month:
 
 		#notify the String variable
 		self.notifyStrVar.set(calendar.month_name[self.displayMonths.index(text) + 1])
+
+# Displays Calendar selection grid with dates
+# for the selected month and year
+
 
 if __name__ == "__main__":
 	root = tk.Tk()
